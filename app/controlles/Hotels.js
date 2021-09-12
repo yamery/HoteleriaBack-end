@@ -34,8 +34,9 @@ const getHotel = async(req, res) => {
 
 const createHotel = async(req, res) => {
     try {
-        const { nombre } = req.body;
-        const resDetail = await hotelModel.create({ nombre });
+        const { nombre, servicios, descripcion, horarios } = req.body;
+        console.log(servicios)
+        const resDetail = await hotelModel.create({ nombre, servicios, descripcion, horarios });
         res.json({
             status: 201,
             data: resDetail,
