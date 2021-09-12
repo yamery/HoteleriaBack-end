@@ -62,7 +62,7 @@ const updateHotel = async(req, res) => {
         res.json({
             status: 201,
             data: response2,
-            msg: "Hotel Actualizado yupiii sandia"
+            msg: "Hotel Actualizado"
         });
     } catch (err) {
         httpError(res, err);
