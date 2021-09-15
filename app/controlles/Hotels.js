@@ -50,7 +50,7 @@ const createHotel = async(req, res) => {
 const updateHotel = async(req, res) => {
     try {
         const { id } = req.params;
-        const { nombre } = req.body;
+        const { nombre, servicios, descripcion, horarios } = req.body;
         const response = await hotelModel.findById(req.params.id);
         if (!response) {
             res.status(404).json({ msg: "No existe el hotel" })
@@ -58,7 +58,10 @@ const updateHotel = async(req, res) => {
 
         const response2 = await hotelModel.findByIdAndUpdate(
             id, {
-                nombre
+                nombre,
+                servicios,
+                descripcion,
+                horarios
             }, { new: true })
         res.json({
             status: 201,
@@ -73,7 +76,6 @@ const updateHotel = async(req, res) => {
 const deleteHotel = async(req, res) => {
     try {
         const { id } = req.params;
-        const { nombre } = req.body;
         const response = await hotelModel.findByIdAndDelete(id);
         res.json({
             status: 200,
