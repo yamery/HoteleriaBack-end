@@ -16,6 +16,8 @@ const getHotels = async(req, res) => {
     }
 }
 
+
+
 const getHotel = async(req, res) => {
     try {
         const response = await hotelModel.findById(req.params.id);
@@ -87,4 +89,21 @@ const deleteHotel = async(req, res) => {
     }
 }
 
-module.exports = { getHotel, getHotels, createHotel, updateHotel, deleteHotel }
+
+
+const filtrarHoteles = async(req, res) => {
+    const { parametros } = req.params;
+    const busq = parametros.split("+")
+    busq.pop();
+    const response = await hotelModel.find({ servicios: { $all: busq } });
+    try {
+        res.json({
+            status: 200,
+            data: response,
+            msg: null
+        });
+    } catch (err) {
+        httpError(res, err)
+    }
+}
+module.exports = { getHotel, getHotels, createHotel, updateHotel, deleteHotel, filtrarHoteles }
