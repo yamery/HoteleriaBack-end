@@ -3,12 +3,13 @@ const hotelModel = require("../models/Hotel");
 
 const validForm = async(req, res, next) => {
     try {
+
         const {
             nombre,
             descripcion,
             horarios
         } = req.body;
-        console.log("yameteeee")
+        console.log(req.body)
         if (!!nombre && !!descripcion && !!horarios.checkIn && !!horarios.checkOut) {
             next();
         } else {
@@ -25,6 +26,7 @@ const validForm = async(req, res, next) => {
 
 const validExist = async(req, res, next) => {
     try {
+
         const { nombre } = req.body;
         const hotels = await hotelModel.findOne({ nombre: removerDecoradores(nombre) }, { _id: 0, nombre: 1 }) || null
         if (!!hotels) { //verificar de forma boolanea si hotel tiene datos o esta vacio

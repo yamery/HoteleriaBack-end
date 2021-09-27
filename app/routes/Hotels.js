@@ -3,12 +3,12 @@ const router = express.Router()
 const { getHotel, getHotels, createHotel, updateHotel, deleteHotel, filtrarHoteles } = require('../controlles/Hotels')
 const checkOrigen = require('../middleware/origen')
 const { validExist, validForm } = require('../validations/hotels')
-
+const { upload } = require('../middleware/multer')
 router.get('/', getHotels)
 
 router.get('/:id', getHotel)
 
-router.post('/', checkOrigen, validExist, validForm, createHotel)
+router.post('/', checkOrigen, upload, validExist, createHotel)
 
 router.put('/:id', checkOrigen, validForm, updateHotel)
 

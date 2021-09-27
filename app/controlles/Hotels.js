@@ -36,9 +36,14 @@ const getHotel = async(req, res) => {
 
 const createHotel = async(req, res) => {
     try {
-        const { nombre, servicios, descripcion, horarios } = req.body;
-        console.log(servicios)
-        const resDetail = await hotelModel.create({ nombre, servicios, descripcion, horarios });
+        const imgPath = req.file.path
+
+        const { nombre, descripcion, checkIn, checkOut } = req.body;
+        const servicios = JSON.parse(req.body.servicios).servicios
+
+
+        const horarios = { checkIn, checkOut }
+        const resDetail = await hotelModel.create({ nombre, servicios, descripcion, horarios, imgPath });
         res.json({
             status: 201,
             data: resDetail,
@@ -90,7 +95,6 @@ const deleteHotel = async(req, res) => {
 }
 
 
-
 const filtrarHoteles = async(req, res) => {
     const { parametros } = req.params;
     const busq = parametros.split("+")
@@ -106,4 +110,6 @@ const filtrarHoteles = async(req, res) => {
         httpError(res, err)
     }
 }
+
+
 module.exports = { getHotel, getHotels, createHotel, updateHotel, deleteHotel, filtrarHoteles }
