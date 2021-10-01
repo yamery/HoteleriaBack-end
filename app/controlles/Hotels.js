@@ -1,7 +1,8 @@
 const { model } = require('mongoose');
 const { httpError } = require('../helpers/handleError')
 const hotelModel = require('../models/Hotel')
-
+const fs = require('fs-extra');
+const path = require('path')
 
 const getHotels = async(req, res) => {
     const response = await hotelModel.find({});
@@ -36,6 +37,7 @@ const getHotel = async(req, res) => {
 
 const createHotel = async(req, res) => {
     try {
+        console.log(req.body)
         const imgPath = req.file.path
 
         const { nombre, descripcion, checkIn, checkOut } = req.body;
@@ -83,7 +85,11 @@ const updateHotel = async(req, res) => {
 const deleteHotel = async(req, res) => {
     try {
         const { id } = req.params;
+        const hotel = await hotelModel.findById(id);
         const response = await hotelModel.findByIdAndDelete(id);
+        if (response) {
+            await fs.unlink(path.resolve(hotel.imgPath));
+        }
         res.json({
             status: 200,
             data: response,
