@@ -1,5 +1,6 @@
 const multer = require('multer')
 const path = require('path')
+const mime = require('mime-types');
 const {
     v1: uuidv1,
     v4: uuidv4,
@@ -7,7 +8,7 @@ const {
 const storage = multer.diskStorage({
     destination: 'uploads/',
     filename: (req, file, cb) => {
-        cb(null, uuidv4() + path.extname(file.originalname))
+        cb(null, uuidv4() + "." + mime.extension(file.mimetype))
     }
 })
 

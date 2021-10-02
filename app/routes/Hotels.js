@@ -10,7 +10,7 @@ router.get('/:id', getHotel)
 
 router.post('/', checkOrigen, upload, validExist, createHotel)
 
-router.put('/:id', checkOrigen, validForm, updateHotel)
+router.put('/:id', checkOrigen, upload, updateHotel)
 
 // actualizar visualizacion
 // router.patch('/:id', updateHotel)

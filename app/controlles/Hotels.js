@@ -59,24 +59,30 @@ const createHotel = async(req, res) => {
 const updateHotel = async(req, res) => {
     try {
         const { id } = req.params;
-        const { nombre, servicios, descripcion, horarios } = req.body;
+        const imgPath = req.file.path;
+        const { nombre, descripcion, checkIn, checkOut } = req.body;
+        const horarios = { checkIn, checkOut }
+        const servicios = JSON.parse(req.body.servicios).servicios
         const response = await hotelModel.findById(req.params.id);
+
         if (!response) {
             res.status(404).json({ msg: "No existe el hotel" })
+        } else {
+            await fs.unlink(path.resolve(response.imgPath));
+            const response2 = await hotelModel.findByIdAndUpdate(
+                id, {
+                    nombre,
+                    servicios,
+                    descripcion,
+                    horarios,
+                    imgPath
+                }, { new: true })
+            res.json({
+                status: 201,
+                data: response2,
+                msg: "Hotel Actualizado"
+            });
         }
-
-        const response2 = await hotelModel.findByIdAndUpdate(
-            id, {
-                nombre,
-                servicios,
-                descripcion,
-                horarios
-            }, { new: true })
-        res.json({
-            status: 201,
-            data: response2,
-            msg: "Hotel Actualizado"
-        });
     } catch (err) {
         httpError(res, err);
     }
