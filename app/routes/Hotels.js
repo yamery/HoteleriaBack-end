@@ -4,13 +4,14 @@ const { getHotel, getHotels, createHotel, updateHotel, deleteHotel, filtrarHotel
 const checkOrigen = require('../middleware/origen')
 const { validExist, validForm, validExistDelUpd } = require('../validations/hotels')
 const { upload } = require('../middleware/multer')
+
 router.get('/', getHotels)
 
 router.get('/:id', getHotel)
 
-router.post('/', checkOrigen, upload, validExist, createHotel)
+router.post('/', checkOrigen, upload, validForm, validExist, createHotel)
 
-router.put('/:id', checkOrigen, upload, updateHotel)
+router.put('/:id', checkOrigen, upload, validForm, validExistDelUpd, updateHotel)
 
 // actualizar visualizacion
 // router.patch('/:id', updateHotel)

@@ -9,12 +9,16 @@ const validForm = async(req, res, next) => {
         const {
             nombre,
             descripcion,
-            horarios
+            checkIn,
+            checkOut,
+            direccion,
+            precioNoche
         } = req.body;
         console.log(req.body)
-        if (!!nombre && !!descripcion && !!horarios.checkIn && !!horarios.checkOut) {
+        if (!!nombre && !!descripcion && !!checkIn && !!checkOut && !!direccion && !!precioNoche) {
             next();
         } else {
+            await fs.unlink(path.resolve(req.file.path));
             res.json({
                 status: 403,
                 data: null,

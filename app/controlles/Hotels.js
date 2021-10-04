@@ -23,7 +23,11 @@ const getHotel = async(req, res) => {
     try {
         const response = await hotelModel.findById(req.params.id);
         if (!response) {
-            res.status(404).json({ msg: 'No existe el hotel' })
+            res.json({
+                status: 404,
+                data: null,
+                msg: 'No existe el hotel'
+            });
         }
         res.json({
             status: 200,
@@ -39,13 +43,10 @@ const createHotel = async(req, res) => {
     try {
         console.log(req.body)
         const imgPath = req.file.path
-
-        const { nombre, descripcion, checkIn, checkOut } = req.body;
+        const { nombre, descripcion, checkIn, checkOut, direccion, precioNoche } = req.body;
         const servicios = JSON.parse(req.body.servicios).servicios
-
-
         const horarios = { checkIn, checkOut }
-        const resDetail = await hotelModel.create({ nombre, servicios, descripcion, horarios, imgPath });
+        const resDetail = await hotelModel.create({ nombre, servicios, descripcion, horarios, imgPath, direccion, precioNoche });
         res.json({
             status: 201,
             data: resDetail,
@@ -60,12 +61,17 @@ const updateHotel = async(req, res) => {
     try {
         const { id } = req.params;
         const imgPath = req.file.path;
-        const { nombre, descripcion, checkIn, checkOut } = req.body;
+        const { nombre, descripcion, checkIn, checkOut, direccion, precioNoche } = req.body;
         const horarios = { checkIn, checkOut }
         const servicios = JSON.parse(req.body.servicios).servicios
         const response = await hotelModel.findById(req.params.id);
 
         if (!response) {
+            res.json({
+                status: 404,
+                data: response2,
+                msg: "No existe el hotel"
+            });
             res.status(404).json({ msg: "No existe el hotel" })
         } else {
             await fs.unlink(path.resolve(response.imgPath));
@@ -75,7 +81,9 @@ const updateHotel = async(req, res) => {
                     servicios,
                     descripcion,
                     horarios,
-                    imgPath
+                    imgPath,
+                    direccion,
+                    precioNoche
                 }, { new: true })
             res.json({
                 status: 201,

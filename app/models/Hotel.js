@@ -22,6 +22,14 @@ const HotelSchema = new mongoose.Schema({
             required: true
         }
     },
+    direccion: {
+        type: String,
+        required: true
+    },
+    precioNoche: {
+        type: String,
+        required: true
+    },
     imgPath: {
         type: String
     }
